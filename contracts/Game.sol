@@ -216,19 +216,20 @@ contract GameItems is ERC1155, ContextMixin, NativeMetaTransaction {
     // Contract name
     string public name;
     address public owner;
-    mapping(uint256=>string) public uriOf; 
+    mapping(uint256 => string) public uriOf;
+
     constructor(string memory name_) ERC1155("") {
         name = name_;
         _initializeEIP712(name);
     }
 
-    modifier onlyOwner(){
+    modifier onlyOwner() {
         require(_msgSender() == owner);
         _;
     }
 
-    function setURI(uint256 _tokenID,string memory _uri) onlyOwner {
-        uriOf[tokenID] = _uri;
+    function setURI(uint256 _tokenID, string memory _uri) external onlyOwner {
+        uriOf[_tokenID] = _uri;
     }
 
     /**
@@ -237,8 +238,6 @@ contract GameItems is ERC1155, ContextMixin, NativeMetaTransaction {
     function _msgSender() internal view override returns (address sender) {
         return ContextMixin.msgSender();
     }
-
-    function changeURI(string memory _uri) external 
 
     /**
      * As another option for supporting trading without requiring meta transactions, override isApprovedForAll to whitelist our account

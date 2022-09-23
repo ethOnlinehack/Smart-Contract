@@ -3,7 +3,7 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
-contract GameItems is ERC1155, ContextMixin, NativeMetaTransaction {
+contract NewGameItems is ERC1155 {
     // Contract name
     string public name;
     address public owner;
@@ -11,7 +11,7 @@ contract GameItems is ERC1155, ContextMixin, NativeMetaTransaction {
 
     constructor(string memory name_, address _owner) ERC1155("") {
         name = name_;
-        owner - _owner;
+        owner = _owner;
     }
 
     modifier onlyOwner() {
@@ -19,8 +19,16 @@ contract GameItems is ERC1155, ContextMixin, NativeMetaTransaction {
         _;
     }
 
-    function setURI(uint256 _tokenID, string memory _uri) onlyOwner {
-        uriOf[tokenID] = _uri;
+    function setURI(uint256 _tokenID, string memory _uri) external onlyOwner {
+        uriOf[_tokenID] = _uri;
+    }
+
+    function getURI(uint256 _tokenId) external view returns (string memory) {
+        return uriOf[_tokenId];
+    }
+
+    function getOwner() public view returns (address) {
+        return owner;
     }
 
     /**
@@ -39,14 +47,12 @@ contract GameItems is ERC1155, ContextMixin, NativeMetaTransaction {
         return ERC1155.isApprovedForAll(_owner, _operator);
     }
 
-    function mint(address to,
+    function mint(
+        address to,
         uint256 id,
         uint256 amount,
-        bytes memory data) external onlyOwner {
-        
-        ERC1155._mint(address to,
-        uint256 id,
-        uint256 amount,
-        bytes memory data)
+        bytes memory data
+    ) external onlyOwner {
+        ERC1155._mint(to, id, amount, data);
     }
 }
