@@ -40,7 +40,7 @@ contract NewGameItems is ERC1155 {
         override
         returns (bool isOperator)
     {
-        if (_operator == address(_owner)) {
+        if (_operator == address(owner)) {
             return true;
         }
 
